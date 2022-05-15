@@ -5,11 +5,48 @@ exports.getAllItems = async (req, res, next) => {
 	try {
 		let items = await Item.find({ is_deleted: false })
 			.select('trackID description itemSize destination warehouse')
-			.populate('organiser', 'state country', WH);
+			.populate('warehouse', 'state country', WH);
 
 		return res.status(200).json({
 			status: true,
 			data: items,
+		});
+		// res.render('index', items);
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+exports.getEditPage = async (req, res, next) => {
+	let { _id } = req.params;
+
+	try {
+		let items = await Item.findOne({ is_deleted: false, trackID: _id })
+			.select(
+				'name description itemSize destination warehouse recipientName destination',
+			)
+			.populate('warehouse', 'warehouseID -_id', WH);
+
+		let wh = await WH.find().select('name warehouseID -_id');
+
+		return res.status(200).json({
+			status: true,
+			item: items,
+			warehouses: wh,
+		});
+		// res.render('index', items);
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+exports.getCreatePage = async (req, res, next) => {
+	try {
+		let wh = await WH.find().select('name warehouseID -_id');
+
+		return res.status(200).json({
+			status: true,
+			data: wh,
 		});
 		// res.render('index', items);
 	} catch (error) {
@@ -81,7 +118,7 @@ exports.editItem = async (req, res, next) => {
 	let { _id } = req.params;
 	try {
 		// get item by its id
-		let item = await Item.findOne({ _id: _id });
+		let item = await Item.findOne({ trackID: _id });
 
 		if (!item) {
 			return res.status(404).json({
@@ -89,21 +126,19 @@ exports.editItem = async (req, res, next) => {
 			});
 		}
 
-		let data = {
-			name: name || item.name,
-			description: description || item.description,
-			destination: destination || item.destination,
-			warehouse: warehouse_id._id || item.warehouse,
-			itemSize: item_size || item.itemSize,
-			recipientTel: recipient_tel || item.recipientTel,
-			recipientName: recipient_name || item.recipientName,
-		};
+		item.name = name || item.name;
+		item.description = description || item.description;
+		item.destination = destination || item.destination;
+		item.warehouse = warehouse_id || item.warehouse;
+		item.itemSize = item_size || item.itemSize;
+		item.recipientTel = recipient_tel || item.recipientTel;
+		item.recipientName = recipient_name || item.recipientName;
 
-		await item.save();
+		item = await item.save();
 
 		return res.status(200).json({
 			status: true,
-			data,
+			data: item,
 		});
 
 		// res.render('index', items);
@@ -116,7 +151,7 @@ exports.deleteItem = async (req, res, next) => {
 	let { _id } = req.params;
 	try {
 		// get item by its id
-		let item = await Item.findOne({ _id: _id });
+		let item = await Item.findOne({ trackID: _id });
 
 		if (!item) {
 			return res.status(404).json({
@@ -128,7 +163,7 @@ exports.deleteItem = async (req, res, next) => {
 
 		await item.save();
 
-		return res.status(201).json({
+		return res.status(200).json({
 			status: true,
 			data: 'deleted',
 		});
