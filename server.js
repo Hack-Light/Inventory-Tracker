@@ -8,6 +8,10 @@ const express = require('express'),
 	mongoose = require('mongoose'),
 	port = process.env.PORT || 3000;
 
+// routes
+
+const route = require('./routes/index');
+
 // database connection
 mongoose
 	.connect(process.env.DB_URI)
@@ -25,6 +29,17 @@ app.enable('trust proxy');
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// tell my server to use this route
+app.use(route);
+
+// fallback route
+app.use('*', (req, res) => {
+	res.status(404).json({
+		success: false,
+		message: 'Page Not found',
+	});
+});
 
 app.listen(port, () => {
 	console.log(`App listening on port ${port}`);

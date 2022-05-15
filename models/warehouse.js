@@ -27,12 +27,14 @@ const warehouseSchema = new Schema(
 			type: String,
 			required: true,
 		},
-		inventory: {
-			type: Schema.Types.ObjectId,
-			ref: 'item',
-		},
+		inventory: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: 'item',
+			},
+		],
 	},
 	{ timestamps: true },
 );
 
-module.exports = model('item', warehouseSchema);
+module.exports = model('warehouse', warehouseSchema);
