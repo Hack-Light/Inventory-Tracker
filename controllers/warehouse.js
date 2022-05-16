@@ -29,12 +29,12 @@ exports.createWareHouse = async (req, res, next) => {
 
 exports.getWareHouse = async (req, res, next) => {
 	try {
-		return res.status(200).json({
-			status: true,
-			data: 'warehouse',
-		});
+		// return res.status(200).json({
+		// 	status: true,
+		// 	data: 'warehouse',
+		// });
 
-		// res.render('index', items);
+		res.render('warehouse');
 	} catch (error) {
 		console.log(error);
 	}

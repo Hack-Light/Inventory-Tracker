@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+	<%- include("partials/head.ejs") %>
+	<body>
+		<div class="uk-container">
+			<%- include("partials/navbar.ejs") %>
+			<h1 class="uk-heading-line uk-text-center"><span>Edit Item</span></h1>
+
+			<form action="/item/update/<%= item.trackID %>?_method=PUT" method="POST">
+				<fieldset class="uk-fieldset">
+					<div class="uk-margin">
+						<input
+							class="uk-input"
+							name="name"
+							type="text"
+							value="<%= item.name %>"
+							placeholder="Name"
+							required
+						/>
+					</div>
+					<div class="uk-margin">
+						<textarea
+							class="uk-textarea"
+							rows="3"
+							name="description"
+							value=""
+							placeholder="Description"
+							required
+						><%= item.description %></textarea>
+					</div>
+					<div class="uk-margin">
+						<input
+							class="uk-input"
+							name="recipient_name"
+							type="text"
+							value="<%= item.recipientName %>"
+							placeholder="Recipient Name"
+							required
+						/>
+					</div>
+					<div class="uk-margin">
+						<input
+							class="uk-input"
+							name="recipient_tel"
+							type="text"
+							value="<%= item.recipientTel %>"
+							placeholder="Recipient Tel"
+							required
+						/>
+					</div>
+					<div class="uk-margin">
+						<input
+							class="uk-input"
+							name="destination"
+							type="text"
+							value="<%= item.destination %>"
+							placeholder="Destination"
+							required
+						/>
+					</div>
+
+					<div class="uk-margin">
+						<select class="uk-select" required>
+							<% for( let index = 0; index < wh.length; index++ ) { %>
+								<option <%- wh[index].warehouseID == item.warehouse.warehouseID ? "selected" : ""  %>   value="<%= wh[index].warehouseID %>"><%= wh[index].name %></option>
+							<% } %>
+						</select>
+					</div>
+
+					<div class="uk-margin">
+						<input
+							class="uk-input"
+							name="item_size"
+							type="text"
+							value="<%= item.itemSize %>"
+							placeholder="Item Size"
+							required
+						/>
+					</div>
+
+					<div class="uk-margin">
+						<button class="uk-button uk-button-default">Update</button>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+		<%- include("partials/scripts.ejs") %>
+	</body>
+</html>

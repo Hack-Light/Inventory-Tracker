@@ -4,14 +4,14 @@ let WH = require('../models/warehouse');
 exports.getAllItems = async (req, res, next) => {
 	try {
 		let items = await Item.find({ is_deleted: false })
-			.select('trackID description itemSize destination warehouse')
-			.populate('warehouse', 'state country', WH);
+			.select('trackID description itemSize destination name warehouse')
+			.populate('warehouse', 'state country -_id', WH);
 
-		return res.status(200).json({
-			status: true,
-			data: items,
-		});
-		// res.render('index', items);
+		// return res.status(200).json({
+		// 	status: true,
+		// 	data: items,
+		// });
+		return res.render('index', { items });
 	} catch (error) {
 		console.log(error);
 	}
@@ -21,20 +21,20 @@ exports.getEditPage = async (req, res, next) => {
 	let { _id } = req.params;
 
 	try {
-		let items = await Item.findOne({ is_deleted: false, trackID: _id })
+		let item = await Item.findOne({ is_deleted: false, trackID: _id })
 			.select(
-				'name description itemSize destination warehouse recipientName destination',
+				'name description itemSize destination warehouse recipientName recipientTel trackID destination',
 			)
 			.populate('warehouse', 'warehouseID -_id', WH);
 
 		let wh = await WH.find().select('name warehouseID -_id');
 
-		return res.status(200).json({
-			status: true,
-			item: items,
-			warehouses: wh,
-		});
-		// res.render('index', items);
+		// return res.status(200).json({
+		// 	status: true,
+		// 	item: items,
+		// 	warehouses: wh,
+		// });
+		res.render('edit-item', { item, wh });
 	} catch (error) {
 		console.log(error);
 	}
@@ -44,11 +44,11 @@ exports.getCreatePage = async (req, res, next) => {
 	try {
 		let wh = await WH.find().select('name warehouseID -_id');
 
-		return res.status(200).json({
-			status: true,
-			data: wh,
-		});
-		// res.render('index', items);
+		// return res.status(200).json({
+		// 	status: true,
+		// 	data: wh,
+		// });
+		return res.render('create-item', { wh });
 	} catch (error) {
 		console.log(error);
 	}

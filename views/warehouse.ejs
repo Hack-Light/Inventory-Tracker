@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include("partials/head.ejs") %>
+	<body>
+		<div class="uk-container">
+            <%- include("partials/navbar.ejs") %>
+
+			<h1 class="uk-heading-line uk-text-center"><span>Add Warehouse</span></h1>
+
+			<form action="/warehouse/new" method="POST">
+				<fieldset class="uk-fieldset">
+					<div class="uk-margin">
+						<input
+							class="uk-input"
+							name="name"
+							type="text"
+							placeholder="Name"
+                            required
+						/>
+					</div>
+
+					<div class="uk-margin">
+						<input
+							class="uk-input"
+							name="address"
+							type="text"
+							placeholder="Address"
+                            required
+						/>
+					</div>
+					<div class="uk-margin">
+						<input
+							class="uk-input"
+							name="state"
+							type="text"
+							placeholder="State"
+                            required
+						/>
+					</div>
+					<div class="uk-margin">
+						<input
+							class="uk-input"
+							name="country"
+							type="text"
+							placeholder="Country"
+                            required
+						/>
+					</div>
+
+
+                    <div class="uk-margin">
+                        <button class="uk-button uk-button-default">Submit</button>
+                    </div>
+				</fieldset>
+			</form>
+		</div>
+
+		<%- include("partials/scripts.ejs") %>
+
+	</body>
+</html>

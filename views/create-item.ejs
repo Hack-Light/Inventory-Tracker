@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+	<%- include("partials/head.ejs") %>
+	<body>
+		<div class="uk-container">
+            <%- include("partials/navbar.ejs") %>
+
+			<h1 class="uk-heading-line uk-text-center"><span>Add Item</span></h1>
+
+			<form action="/item/new" method="POST">
+				<fieldset class="uk-fieldset">
+					<div class="uk-margin">
+						<input
+							class="uk-input"
+							name="name"
+							type="text"
+							placeholder="Name"
+                            required
+						/>
+					</div>
+					<div class="uk-margin">
+						<textarea
+							class="uk-textarea"
+							rows="3"
+							name="description"
+							placeholder="Description"
+                            required
+						></textarea>
+					</div>
+					<div class="uk-margin">
+						<input
+							class="uk-input"
+							name="recipient_name"
+							type="text"
+							placeholder="Recipient Name"
+                            required
+						/>
+					</div>
+					<div class="uk-margin">
+						<input
+							class="uk-input"
+							name="recipient_tel"
+							type="text"
+							placeholder="Recipient Tel"
+                            required
+						/>
+					</div>
+					<div class="uk-margin">
+						<input
+							class="uk-input"
+							name="destination"
+							type="text"
+							placeholder="Destination"
+                            required
+						/>
+					</div>
+
+					<div class="uk-margin">
+						<select class="uk-select" name="warehouse_id" required>
+							<% for( let index = 0; index < wh.length; index++ ) { %>
+								<option value="<%= wh[index].warehouseID %>"><%= wh[index].name %></option>
+							<% } %>
+						</select>
+					</div>
+
+					<div class="uk-margin">
+						<input
+							class="uk-input"
+							name="item_size"
+							type="text"
+							placeholder="Item Size"
+                            required
+						/>
+					</div>
+
+                    <div class="uk-margin">
+                        <button class="uk-button uk-button-default">Submit</button>
+                    </div>
+				</fieldset>
+			</form>
+		</div>
+
+		<%- include("partials/scripts.ejs") %>
+
+	</body>
+</html>
